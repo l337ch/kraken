@@ -1,8 +1,8 @@
 [Unit]
 Description=Launch dockerized kubernetes hyperkube proxy
 {% if proxy_type == "node" %}
-Requires=k8s-docker-kubelet.service
-After=k8s-docker-kubelet.service
+Requires=k8s-binary-kubelet.service
+After=k8s-binary-kubelet.service
 {% else %}
 Requires=k8s-docker-controller-manager.service
 After=k8s-docker-controller-manager.service
