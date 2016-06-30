@@ -1,4 +1,4 @@
 ---
+# Hack to ensure the hyperkube binary is avialble for kubelet nodes regardless of deployment_mode
 - include: install-kubectl.yaml
 - include: install-hyperkube.yaml
-  when: "deployment_mode == 'binary'"

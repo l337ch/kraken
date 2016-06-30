@@ -18,5 +18,6 @@
 
 - include: kubelet-binary.yaml
   when: "deployment_mode == 'binary'"
-- include: kubelet-docker.yaml
+# Hack to force kubelet binary regardless of deployment_mode setting
+- include: kubelet-binary.yaml
   when: "deployment_mode == 'container'"
