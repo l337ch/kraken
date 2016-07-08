@@ -23,7 +23,7 @@ The contents of the file consists of variable-value pairs. For example:
 As described [here](https://www.terraform.io/intro/getting-started/variables.ht
 ml). For a local cluster you __must__ provide:
 
-    cluster_name=<name of your cluster> 
+    cluster_name=<name of your cluster>
 
 For an AWS cluster you __must__ provide:
 
@@ -33,7 +33,7 @@ For an AWS cluster you __must__ provide:
 For an AWS cluster you __must__ configure an AWS credentials file as documented [here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started
 .html#cli-config-files)
 
-If the profile in your credential file is not named "default", you can specify 
+If the profile in your credential file is not named "default", you can specify
  different profile name as follows:
 
     aws_profile = "<profile name>"
@@ -43,7 +43,13 @@ The following are some of the other optional parameters which may be specified:
     apiserver_count = "<apiserver pool size>"
     node_count = "<number of kubernetes nodes>"
 
-For better performance, you should consider adding and modifing the following configuration items:
+If you chose to create a cluster with kubernetes components running as containers, you will need to include the following variables in the terraform.tfvars file:
+
+    hyperkube_image =<hyperkube image to use if not using default>
+    kubernetes_binaries_uri =<uri for kubernetes if not using default>
+    deployment_mode = "container"
+
+For better performance, you should consider adding and modifying the following configuration items:
 
     aws_etcd_type = "<aws instance type for etcd>"
     aws_storage_type_etcd = "<ephemeral>"
@@ -78,7 +84,7 @@ Kraken supports optionally deploying a third-party scheduler as a set of Kuberne
     kraken_services_repo = "git://github.com/your-fork/kraken-services"
     kraken_services_branch = "your-branch"
     thirdparty_scheduler = "custom-scheduler"
-    
+
 ## Create cluster
 
 Easiest way to create a non-local kraken cluster is to use /bin scripts that let you create a kraken cluster from a remote docker container.
@@ -89,11 +95,11 @@ Then it builds a docker container on that instance, with all the tools required 
 Then the docker container is used to create a Kraken cluster.
 
     cd bin
-    
+
 On a system with a Bash shell:
 
     ./kraken-up.sh --dmname DOCKER_MACHINE_NAME --clustertype aws --clustername KUBERNETES_CLUSTER_NAME --dmopts "--driver amazonec2 --amazonec2-vpc-id ID_OF_VPC --amazonec2-region EC2_REGION"
-    
+
 The '--dmopts/-dmopts' parameter is a string of driver parameters for docker-machine. You can use any driver you want - info on supported drivers is available in docker-machine help. Also, '--dmopts/-dmopts' is only required the first time you start up a cluster, after that as long as docker-machine is running you don't need to provide the option string again.  
 
 If you prefer to store your AWS credentials file in a directory other than ~/.aws, you can pass --provider-credential-directory path, however note that if you are using docker-machine, then you will need to add the appropriate --dmopts as docker-machine can not generally determine atypical credential directory locations. For example, for AWS, you would add "--amazonec2-access-key AWS_KEY_ID --amazonec2-secret-key AWS_SECRET_KEY" to --dmopts.
@@ -110,12 +116,12 @@ On a system with a Bash shell:
     $ kubectl --kubeconfig=clusters/ec2/kube_config --cluster=KUBERNETES_CLUSTER_NAME get nodes
 
 Follow the instructions in script output.
-    
+
 ## Destroy Cluster
 On a system with a Bash shell:
 
     $ ./kraken-down.sh --dmname DOCKER_MACHINE_NAME --clustername KUBERNETES_CLUSTER_NAME
-    
+
 ## Using LogEntries.com
 1. First, create an account on logentries.com.
 2. Create a new log in your Logentries account by clicking + Add New Log.
